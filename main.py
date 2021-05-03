@@ -1,7 +1,7 @@
 import logging
 import os
 
-from flask import Flask, request, jsonify, send_from_directory
+from flask import Flask
 
 from temp_sensor import TempSensor
 from properties import ip, port
