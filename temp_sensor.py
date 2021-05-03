@@ -30,7 +30,7 @@ class TempSensor(object):
             humid = humid_raw * 100 / 1048576
             self._temp = round(temp_c, 2)
             self._humidity = round(humid, 1)
-        except all:
+        except any:
             e = sys.exc_info()[0]
             logging.error('read_sensor() error' + str(e))
         if self._running:
