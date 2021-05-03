@@ -7,7 +7,7 @@ import time
 bus = smbus.SMBus(1)
 config = [0x08, 0x00]
 
-module_logger = logging.getLogger('main.program')
+module_logger = logging.getLogger('main.temp_sensor')
 
 
 class TempSensor(object):
@@ -30,9 +30,8 @@ class TempSensor(object):
             humid = humid_raw * 100 / 1048576
             self._temp = round(temp_c, 2)
             self._humidity = round(humid, 1)
-        except IOError and OSError:
-            e = sys.exc_info()[0]
-            logging.error('read_sensor() error' + str(e))
+        except IOError and OSError as e:
+            module_logger.error('read_sensor() error' + str(e))
         if self._running:
             timer = threading.Timer(15, self.read_sensor)
             timer.start()
