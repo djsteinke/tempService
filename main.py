@@ -32,6 +32,11 @@ def get_temp_f(temp):
     return temp*1.8+32
 
 
+@app.route('/')
+def get_app():
+    return 'Welcome to Temperature Service<br>Use /getTemp for temperature readings.', 200
+
+
 @app.route('/getTemp')
 def get_temp():
     global sensor
