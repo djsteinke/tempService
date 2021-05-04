@@ -53,7 +53,8 @@ if __name__ == '__main__':
     try:
         stream = os.popen('hostname -I')
         host_name = stream.read().strip()
-    except all:
+    except IOError and OSError as e:
+        logger.error('__main__ error' + str(e))
         host_name = ip
     logger.info("machine host_name[" + host_name + "]")
     sensor.start()
