@@ -26,6 +26,7 @@ logger.addHandler(fh)
 logger.addHandler(ch)
 
 sensor = TempSensor()
+url = ""
 
 
 def get_temp_f(temp):
@@ -34,7 +35,8 @@ def get_temp_f(temp):
 
 @app.route('/')
 def get_app():
-    return 'Welcome to Temperature Service<br>Use /getTemp for temperature readings.', 200
+    link = f'{url}/getTemp'
+    return f'Welcome to Temperature Service<br>Use <a href="{link}">{link}</a> for temperature readings.', 200
 
 
 @app.route('/getTemp')
@@ -49,6 +51,7 @@ def get_temp():
 
 
 if __name__ == '__main__':
+    global url
     try:
         stream = os.popen('hostname -I')
         host_name = stream.read().strip()
@@ -56,4 +59,5 @@ if __name__ == '__main__':
         host_name = ip
     logger.info("machine host_name[" + host_name + "]")
     sensor.start()
+    url = f'http://{host_name}:{port}'
     app.run(host=host_name, port=port)
