@@ -35,14 +35,12 @@ def get_temp_f(temp):
 
 @app.route('/')
 def get_app():
-    global url
     link = f'{url}/getTemp'
     return f'Welcome to Temperature Service<br>Use <a href="{link}">{link}</a> for temperature readings.', 200
 
 
 @app.route('/getTemp')
 def get_temp():
-    global sensor
     ret = {"temp": sensor.temp,
            "temp_f": get_temp_f(sensor.temp),
            "humidity": sensor.humidity}
