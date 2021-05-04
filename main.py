@@ -34,9 +34,12 @@ def get_temp_f(temp):
 
 @app.route('/getTemp')
 def get_temp():
+    global sensor
     ret = {"temp": sensor.temp,
            "temp_f": get_temp_f(sensor.temp),
            "humidity": sensor.humidity}
+    if not sensor.connected:
+        ret['humidity'] = -1
     return ret, 200
 
 

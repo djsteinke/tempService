@@ -14,6 +14,7 @@ class TempSensor(object):
         self._temp = 0.0
         self._humidity = 0.0
         self._running = False
+        self._connected = False
 
     def read_sensor(self):
         try:
@@ -29,8 +30,10 @@ class TempSensor(object):
             humid = humid_raw * 100 / 1048576
             self._temp = round(temp_c, 2)
             self._humidity = round(humid, 1)
+            self._connected = True
         except IOError and OSError as e:
             module_logger.error('read_sensor() error' + str(e))
+            self._connected = False
         if self._running:
             timer = threading.Timer(15, self.read_sensor)
             timer.start()
@@ -49,3 +52,7 @@ class TempSensor(object):
     @property
     def humidity(self):
         return self._humidity
+
+    @property
+    def connected(self):
+        return self._connected
