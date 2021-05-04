@@ -28,9 +28,14 @@ logger.addHandler(ch)
 sensor = TempSensor()
 
 
+def get_temp_f(temp):
+    return temp*1.8+32
+
+
 @app.route('/getTemp')
 def get_temp():
     ret = {"temp": sensor.temp,
+           "temp_f": get_temp_f(sensor.temp),
            "humidity": sensor.humidity}
     return ret, 200
 
