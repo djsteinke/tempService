@@ -35,6 +35,7 @@ def get_temp_f(temp):
 
 @app.route('/')
 def get_app():
+    global url
     link = f'{url}/getTemp'
     return f'Welcome to Temperature Service<br>Use <a href="{link}">{link}</a> for temperature readings.', 200
 
@@ -51,7 +52,6 @@ def get_temp():
 
 
 if __name__ == '__main__':
-    global url
     try:
         stream = os.popen('hostname -I')
         host_name = stream.read().strip()
