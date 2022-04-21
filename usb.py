@@ -60,7 +60,7 @@ class USB(object):
 
     @property
     def f(self):
-        return self.c
+        return self.f
 
     @f.setter
     def f(self, val):
