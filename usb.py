@@ -7,8 +7,8 @@ module_logger = logging.getLogger('main.usb')
 
 
 class USB(object):
-    def __init__(self):
-        self.port = ''
+    def __init__(self, port='tty/USB0'):
+        self.port = port
         self.baud = 9600
         self.serial = None
         self.timer = None
