@@ -24,7 +24,8 @@ class USB(object):
         except serial.SerialException as e:
             module_logger.error('connect() failed: ' + str(e))
             raise Exception('Failed to connect')
-        self.timer = Timer(1, self.listen)
+        self.timer = Timer(0.1, self.listen)
+        self.timer.start()
 
     def close(self):
         if self.serial is not None:
@@ -36,20 +37,21 @@ class USB(object):
         self.connected = False
 
     def listen(self):
-        if self.serial is not None:
-            try:
-                data = self.serial.readline()
-                s_data = data.decode().rstrip()
-                if len(s_data) > 0:
-                    module_logger.debug(f'listen(): {s_data}')
-                    j = loads(s_data)
-                    self._c = j['c']
-                    self._f = j['f']
-                    self._h = j['h']
-                self.timer.start()
-            except serial.SerialException as e:
-                module_logger.error(f'listen() ERROR: {str(e)}')
-                self.close()
+        while self.connected:
+            if self.serial is not None:
+                try:
+                    data = self.serial.readline()
+                    s_data = data.decode().rstrip()
+                    if len(s_data) > 0:
+                        module_logger.debug(f'listen(): {s_data}')
+                        j = loads(s_data)
+                        self._c = j['c']
+                        self._f = j['f']
+                        self._h = j['h']
+                    self.timer.start()
+                except serial.SerialException as e:
+                    module_logger.error(f'listen() ERROR: {str(e)}')
+                    self.close()
 
     @property
     def c(self):

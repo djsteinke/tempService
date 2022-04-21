@@ -59,6 +59,5 @@ if __name__ == '__main__':
         host_name = ip
     logger.info("machine host_name[" + host_name + "]")
     usb.connect()
-    usb.listen()
     url = f'http://{host_name}:{port}'
     app.run(host=host_name, port=port)
