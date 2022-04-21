@@ -47,7 +47,8 @@ class USB(object):
                     self._f = j['f']
                     self._h = j['h']
                 self.timer.start()
-            except serial.SerialException:
+            except serial.SerialException as e:
+                module_logger.error(f'listen() ERROR: {str(e)}')
                 self.close()
 
     @property
