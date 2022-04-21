@@ -26,6 +26,7 @@ class USB(object):
             raise Exception('Failed to connect')
         self.timer = Timer(0.1, self.listen)
         self.timer.start()
+        module_logger.debug('connect(): complete')
 
     def close(self):
         if self.serial is not None:
@@ -35,8 +36,10 @@ class USB(object):
             self.timer.cancel()
             self.timer = None
         self.connected = False
+        module_logger.debug('close(): complete')
 
     def listen(self):
+        module_logger.debug('listen(): started')
         while self.connected:
             if self.serial is not None:
                 try:
