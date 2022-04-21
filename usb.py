@@ -13,9 +13,9 @@ class USB(object):
         self.serial = None
         self.timer = None
         self.connected = False
-        self.c = 0.00
-        self.f = 0.00
-        self.h = 0.0
+        self._c = 0.00
+        self._f = 0.00
+        self._h = 0.0
 
     def connect(self):
         try:
@@ -43,33 +43,21 @@ class USB(object):
                 if len(s_data) > 0:
                     module_logger.debug(f'listen(): {s_data}')
                 j = loads(s_data)
-                self.c = j['c']
-                self.f = j['f']
-                self.h = j['h']
+                self._c = j['c']
+                self._f = j['f']
+                self._h = j['h']
                 self.timer.start()
             except serial.SerialException:
                 self.close()
 
     @property
     def c(self):
-        return self.c
-
-    @c.setter
-    def c(self, val):
-        self.c = val
+        return self._c
 
     @property
     def f(self):
-        return self.f
-
-    @f.setter
-    def f(self, val):
-        self.f = val
+        return self._f
 
     @property
     def h(self):
-        return self.h
-
-    @h.setter
-    def h(self, val):
-        self.h = val
+        return self._h
