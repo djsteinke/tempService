@@ -34,9 +34,14 @@ class USB(object):
         module_logger.debug('close(): complete')
 
     def listen(self):
+        first = True
         module_logger.debug('listen(): started')
         while self.connected:
+            if first:
+                module_logger.debug('listen(): connected')
             if self.serial is not None:
+                if first:
+                    module_logger.debug('listen(): serial')
                 try:
                     data = self.serial.readline()
                     s_data = data.decode().rstrip()
@@ -49,6 +54,7 @@ class USB(object):
                 except serial.SerialException as e:
                     module_logger.error(f'listen() ERROR: {str(e)}')
                     self.close()
+                first = False
 
     @property
     def c(self):
