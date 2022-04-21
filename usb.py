@@ -42,10 +42,10 @@ class USB(object):
                 s_data = data.decode().rstrip()
                 if len(s_data) > 0:
                     module_logger.debug(f'listen(): {s_data}')
-                j = loads(s_data)
-                self._c = j['c']
-                self._f = j['f']
-                self._h = j['h']
+                    j = loads(s_data)
+                    self._c = j['c']
+                    self._f = j['f']
+                    self._h = j['h']
                 self.timer.start()
             except serial.SerialException:
                 self.close()
