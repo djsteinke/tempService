@@ -11,7 +11,6 @@ class USB(object):
         self.port = port
         self.baud = 9600
         self.serial = None
-        self.timer = None
         self.connected = False
         self._c = 0.00
         self._f = 0.00
@@ -24,17 +23,13 @@ class USB(object):
         except serial.SerialException as e:
             module_logger.error('connect() failed: ' + str(e))
             raise Exception('Failed to connect')
-        self.timer = Timer(0.1, self.listen)
-        self.timer.start()
+        Timer(1, self.listen).start()
         module_logger.debug('connect(): complete')
 
     def close(self):
         if self.serial is not None:
             self.serial.close()
             self.serial = None
-        if self.timer is not None:
-            self.timer.cancel()
-            self.timer = None
         self.connected = False
         module_logger.debug('close(): complete')
 
@@ -51,7 +46,6 @@ class USB(object):
                         self._c = j['c']
                         self._f = j['f']
                         self._h = j['h']
-                    self.timer.start()
                 except serial.SerialException as e:
                     module_logger.error(f'listen() ERROR: {str(e)}')
                     self.close()
