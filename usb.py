@@ -1,6 +1,9 @@
 import serial
 from threading import Timer
 from json import loads
+import logging
+
+module_logger = logging.getLogger('main.usb')
 
 
 class USB(object):
@@ -18,8 +21,8 @@ class USB(object):
         try:
             self.serial = serial.Serial(self.port, self.baud, timeout=1)
             self.connected = True
-        except serial.SerialException:
-            print('Serial connection failed.')
+        except serial.SerialException as e:
+            module_logger.error('connect() failed: ' + str(e))
             raise Exception('Failed to connect')
         self.timer = Timer(1, self.listen)
 
@@ -38,7 +41,7 @@ class USB(object):
                 data = self.serial.readline()
                 s_data = data.decode().rstrip()
                 if len(s_data) > 0:
-                    print(f'recv[{s_data}]')
+                    module_logger.debug(f'listen(): {s_data}')
                 j = loads(s_data)
                 self.c = j['c']
                 self.f = j['f']
