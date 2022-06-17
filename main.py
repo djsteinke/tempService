@@ -3,7 +3,7 @@ import os
 
 from flask import Flask
 from usb import USB
-# from temp_sensor import TempSensor
+from temp_sensor import TempSensor
 from properties import ip, port
 
 app = Flask(__name__)
@@ -25,8 +25,8 @@ ch.setFormatter(formatter)
 logger.addHandler(fh)
 logger.addHandler(ch)
 
-usb = USB()
-#sensor = TempSensor()
+# usb = USB()
+sensor = TempSensor()
 url = ""
 
 
@@ -42,10 +42,10 @@ def get_app():
 
 @app.route('/getTemp')
 def get_temp():
-    ret = {"temp": usb.c,
-           "temp_f": usb.f,
-           "humidity": usb.h}
-    if not usb.connected:
+    ret = {"temp": sensor.temp,
+           "temp_f": get_temp_f(sensor.temp),
+           "humidity": sensor.humidity}
+    if not sensor.connected:
         ret['humidity'] = -1
     return ret, 200
 
@@ -58,6 +58,6 @@ if __name__ == '__main__':
         logger.error('__main__ error' + str(e))
         host_name = ip
     logger.info("machine host_name[" + host_name + "]")
-    usb.connect()
+    sensor.start()
     url = f'http://{host_name}:{port}'
     app.run(host=host_name, port=port)
